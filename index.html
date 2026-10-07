@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Compiler Design — Mid-Sem Practice Drill</title>
+<meta name="description" content="Interactive MCQ, MSQ and fill-in-the-blank practice for the B.Tech Compiler Design mid-term syllabus — language processors, compiler structure, phases, tools, bootstrapping and lexical analysis.">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<header class="masthead">
+  <div class="mast-inner">
+    <div class="mast-left">
+      <p class="eyebrow">JG University · School of Engineering · Mid Semester Exam</p>
+      <h1>Compiler design practice drill</h1>
+      <p class="stand">Year 4 · Semester 7 · Unit 1 · MCQ, MSQ &amp; fill in the blanks</p>
+    </div>
+    <dl class="mast-meta">
+      <div><dt>Bank</dt><dd id="m-count">—</dd></div>
+      <div><dt>Attempted</dt><dd id="m-tried">—</dd></div>
+      <div><dt>Accuracy</dt><dd id="m-acc">—</dd></div>
+    </dl>
+  </div>
+</header>
+
+<main>
+
+  <!-- ============ HOME / SETUP ============ -->
+  <section class="screen" id="s-home">
+    <div class="panel">
+      <h2 class="panel-h">Build a test</h2>
+
+      <div class="field">
+        <span class="flabel">Unit 1 — Introduction to compilers &amp; lexical analysis</span>
+        <p class="unit-line">Every question below comes from this unit's mid-term scope. Tick or untick a topic to narrow the test; untick a format to leave it out.</p>
+      </div>
+
+      <div class="field">
+        <span class="flabel">Topics</span>
+        <div class="chips" id="f-topics"></div>
+        <div class="chip-actions">
+          <button type="button" class="lnk" id="topics-all">Select every topic</button>
+          <button type="button" class="lnk" id="topics-none">Clear</button>
+        </div>
+      </div>
+
+      <div class="field">
+        <span class="flabel">Format</span>
+        <div class="chips" id="f-types"></div>
+      </div>
+
+      <div class="field-grid">
+        <div class="field">
+          <span class="flabel">Length</span>
+          <div class="seg seg-sm" id="f-len">
+            <button type="button" class="seg-b" data-len="10">10</button>
+            <button type="button" class="seg-b is-on" data-len="20">20</button>
+            <button type="button" class="seg-b" data-len="40">40</button>
+            <button type="button" class="seg-b" data-len="all">All</button>
+          </div>
+        </div>
+        <div class="field">
+          <span class="flabel">Order</span>
+          <div class="seg seg-sm" id="f-order">
+            <button type="button" class="seg-b is-on" data-order="shuffle">Shuffle</button>
+            <button type="button" class="seg-b" data-order="seq">Notes order</button>
+          </div>
+        </div>
+        <div class="field">
+          <span class="flabel">Mode</span>
+          <div class="seg seg-sm" id="f-mode">
+            <button type="button" class="seg-b is-on" data-mode="practice">Practice — instant feedback</button>
+            <button type="button" class="seg-b" data-mode="mock">Mock — results at the end</button>
+          </div>
+        </div>
+      </div>
+
+      <label class="check">
+        <input type="checkbox" id="f-missed">
+        <span>Only questions I have answered wrong before</span>
+      </label>
+
+      <div class="start-row">
+        <p class="preview" id="f-preview">—</p>
+        <button type="button" class="btn-primary" id="btn-start">Start practice</button>
+      </div>
+    </div>
+
+    <ul class="legend">
+      <li><b>MCQ</b><span>One correct option. Click it, then check.</span></li>
+      <li><b>MSQ</b><span>Two or more correct options. Select every right one — a missed pick fails the question.</span></li>
+      <li><b>Fill in the blank</b><span>Type the missing word, number or phrase. Spacing, capitals and punctuation are ignored.</span></li>
+    </ul>
+
+    <div class="panel panel-quiet">
+      <h2 class="panel-h">Your record</h2>
+      <div class="recap" id="recap"></div>
+      <button type="button" class="lnk" id="btn-reset">Erase my saved progress</button>
+    </div>
+  </section>
+
+  <!-- ============ QUIZ ============ -->
+  <section class="screen" id="s-quiz" hidden>
+    <div class="quizbar">
+      <div class="chain" id="chain" aria-label="Question progress"></div>
+      <div class="qmeta">
+        <span id="q-pos">1 / 20</span>
+        <span id="q-score">0 correct</span>
+        <span id="q-time">00:00</span>
+        <button type="button" class="lnk" id="btn-quit">End test</button>
+      </div>
+    </div>
+
+    <article class="block" id="block">
+      <div class="block-head">
+        <span id="b-num">BLOCK #0001</span>
+        <span id="b-prev">PREV 0x0000000000000000</span>
+        <span id="b-hash">HASH 0x0000000000000000</span>
+      </div>
+
+      <div class="block-body">
+        <div class="q-tags">
+          <span class="tag" id="b-type">MCQ</span>
+          <span class="q-topic" id="b-topic">Unit 1</span>
+        </div>
+        <h2 class="q-stem" id="q-stem"></h2>
+        <div class="q-area" id="q-area"></div>
+        <div class="feedback" id="feedback" hidden></div>
+      </div>
+
+      <div class="block-foot">
+        <p class="hint" id="q-hint">Keys 1–4 pick an option · Enter checks</p>
+        <div class="acts">
+          <button type="button" class="btn-ghost" id="btn-skip">Skip</button>
+          <button type="button" class="btn-primary" id="btn-check">Check answer</button>
+        </div>
+      </div>
+    </article>
+  </section>
+
+  <!-- ============ RESULTS ============ -->
+  <section class="screen" id="s-result" hidden>
+    <div class="panel scorecard">
+      <p class="score-label" id="r-label">Result</p>
+      <p class="score-big" id="r-big">0 / 0</p>
+      <p class="score-sub" id="r-sub">—</p>
+      <div class="breakdown" id="r-break"></div>
+      <div class="acts acts-center">
+        <button type="button" class="btn-ghost" id="btn-home">Build another test</button>
+        <button type="button" class="btn-ghost" id="btn-review" hidden>Rehearse the ones I missed</button>
+        <button type="button" class="btn-primary" id="btn-again">Same test again</button>
+      </div>
+    </div>
+
+    <div class="panel" id="review-panel" hidden>
+      <h2 class="panel-h">Review</h2>
+      <div id="r-review"></div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="foot">
+  <p>Built from the Compiler Design class notes and the exact mid-term syllabus — language processors, compiler structure, the phases of compilation, compiler construction tools, bootstrapping and self-hosting, the role of the lexical analyzer, tokens, lexemes and patterns, regular expressions, finite automata, conversion of RE to NFA and DFA, DFA minimization, LEX/FLEX generators, implementation of lexical analyzers, and lexical error detection, handling and recovery. Explanations are study notes, not a substitute for the textbook.</p>
+</footer>
+
+<script src="questions-cd-a.js"></script>
+<script src="questions-cd-b.js"></script>
+<script src="questions-cd-c.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
